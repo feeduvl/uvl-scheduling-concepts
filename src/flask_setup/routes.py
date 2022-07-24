@@ -6,13 +6,17 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 
 def do():
+    app.logger.info("foo")
+    """
     scheduler = Scheduler(app.logger, requests)
     scheduler.get_datasets()
     scheduler.update_request_bodies()
     scheduler.make_crawler_requests()
+    """
 
 sched = BackgroundScheduler(daemon=True)
-sched.add_job(do,'interval',hours=24)
+#sched.add_job(do,'interval',hours=24)
+sched.add_job(do,'interval',minutes=1)
 sched.start()
 
 
