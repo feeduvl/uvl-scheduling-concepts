@@ -14,6 +14,8 @@ class Scheduler:
         for entry in response.json():
             if entry["occurrence"] > 0:
                 self.overview.append(entry)
+        if len(self.overview) == 0:
+            self.logger.info('No scheduled crawler tasks found!')
         pass
 
     def update_request_bodies(self):
