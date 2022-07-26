@@ -9,12 +9,37 @@ class Scheduler:
         self.request_handler = request_handler
         pass
 
+    
+    """
+    JSON response
+    [{"subreddit_names":"vlc",
+      "date":"2022-07-26T11:59:25.071Z",
+      "occurrence":1,
+      "number_posts":0,
+      "dataset_name":"jw_dataset_name",
+      "request":{"subreddits":["vlc"],
+                 "dataset_name":"jw_dataset_name",
+                 "blacklist_comments":["bar"],
+                 "blacklist_posts":["foo"],
+                 "comment_depth":1,
+                 "date_from":"07/23/2022",
+                 "date_to":"07/24/2022",
+                 "min_length_comments":5,
+                 "min_length_posts":200,
+                 "new_limit":100,
+                 "post_selection":"new",
+                 "replace_emojis":false,
+                 "replace_urls":true}
+    }]
+    """
     def get_datasets(self):
         response = self.request_handler.get('https://feed-uvl.ifi.uni-heidelberg.de/hitec/repository/concepts/crawler_jobs/all')
         for entry in response.json():
             if entry["occurrence"] > 0:
-                self.overview.append(entry)
-                self.logger.info(entry)
+                date_of_entry = datetime.datetime.strptime(entry["date"][0:10], "%Y%-m-%d").date()
+                if (self.today-date_of_entry) % entry["occurrence"] == 0:
+                    self.overview.append(entry)
+        
         if len(self.overview) == 0:
             self.logger.info('No scheduled crawler tasks found!')
         else:
@@ -30,6 +55,8 @@ class Scheduler:
             occurrence_days = entry["occurrence"]
             new_from_date = self.today + datetime.timedelta(days=-occurrence_days)
             self.overview[index]["request"]["date_from"] = datetime.date.strftime(new_from_date, "%m/%d/%Y")
+            self.logger.info("Processing requests finished:")
+            self.logger.info(self.overview)
         pass
 
     def make_crawler_requests(self):
