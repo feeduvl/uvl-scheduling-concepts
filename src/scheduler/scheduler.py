@@ -37,7 +37,7 @@ class Scheduler:
         for entry in response.json():
             if entry["occurrence"] > 0:
                 date_of_entry = datetime.datetime.strptime(entry["date"][0:10], "%Y-%m-%d").date()
-                if (self.today-date_of_entry) % entry["occurrence"] == 0:
+                if (self.today-date_of_entry).days % entry["occurrence"] == 0:
                     self.overview.append(entry)
         
         if len(self.overview) == 0:
