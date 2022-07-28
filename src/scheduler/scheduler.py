@@ -62,7 +62,6 @@ class Scheduler:
     def make_crawler_requests(self):
         for entry in self.overview:
             request_body = entry["request"]
-            print(request_body)
             response = self.request_handler.post('https://feed-uvl.ifi.uni-heidelberg.de/hitec/reddit/crawl', json=request_body)
             self.logger.info(f'Status Code: {response.status_code}')
             self.logger.info(request_body)
