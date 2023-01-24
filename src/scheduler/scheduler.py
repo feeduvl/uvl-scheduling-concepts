@@ -67,4 +67,10 @@ class Scheduler:
             self.logger.info(request_body)
         pass
 
-            
+class AppReviewScheduler:
+    
+    def __init__(self, logger, request_handler) -> None:
+        self.overview = []
+        self.today = datetime.date.today()
+        self.logger = logger
+        self.request_handler = request_handler
