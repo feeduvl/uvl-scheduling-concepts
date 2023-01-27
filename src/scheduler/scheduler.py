@@ -79,12 +79,15 @@ class AppReviewScheduler:
         
     def get_datasets(self):
         response = self.request_handler.get('https://feed-uvl.ifi.uni-heidelberg.de/hitec/repository/concepts/app_review_crawler_jobs/all')
-        for entry in response.json():
-            if entry["app_occurrence"] > 0:
-                date_of_entry = datetime.datetime.strptime(entry["date"][0:10], "%Y-%m-%d").date()
-                if(self.today-date_of_entry). days % entry["app_occurrence"] == 0:
-                    self.overview.append(entry)
-                    
+        try:
+            for entry in response.json():
+                if entry["app_occurrence"] > 0:
+                    date_of_entry = datetime.datetime.strptime(entry["date"][0:10], "%Y-%m-%d").date()
+                    if(self.today-date_of_entry). days % entry["app_occurrence"] == 0:
+                        self.overview.append(entry)
+        except TypeError:
+            self.logger.info("No collections found")
+
         if len(self.overview) == 0:
             self.logger.info('No scheduled crawler tasks found!')
         else:
