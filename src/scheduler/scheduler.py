@@ -88,6 +88,7 @@ class AppReviewScheduler:
         else:
             self.logger.info('Jobs for scheduling:')
             self.logger.info(self.overview)
+        pass
     
     def update_request_bodies(self):
         for index, entry in enumerate(self.overview):
@@ -98,6 +99,7 @@ class AppReviewScheduler:
             self.overview[index]["request"]["date_from"] = datetime.date.strftime(new_from_date, "%d/%m/%Y")
             self.logger.info("Processing requests finished:")
             self.loggger.info(self.overview)
+        pass
             
     def make_crawler_requests(self):
         for entry in self.overview:
@@ -105,3 +107,4 @@ class AppReviewScheduler:
             response = self.request_handler.post('https://feed-uvl.ifi.uni-heidelberg.de/hitec/app/crawl', json=request_body)
             self.logger.info(f'Status Code: {response.status_code}')
             self.logger.info(request_body)
+        pass
