@@ -103,7 +103,7 @@ class AppReviewScheduler:
             new_from_date = self.today + datetime.timedelta(days=-occurrence_days)
             self.overview[index]["request"]["date_from"] = datetime.date.strftime(new_from_date, "%d/%m/%Y")
             self.logger.info("Processing requests finished:")
-            self.loggger.info(self.overview)
+            self.logger.info(self.overview)
         pass
             
     def make_crawler_requests(self):
